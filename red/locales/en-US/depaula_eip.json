@@ -2,7 +2,7 @@
     "pccc": {
         "in": {
             "label": {
-                "name": "pccc in",
+                "name": "depaula_eip in",
                 "endpoint": "PLC",
                 "mode": "Mode",
                 "variable": "Variable",
@@ -18,12 +18,12 @@
         },
         "out": {
             "label": {
-                "name": "pccc out",
+                "name": "depaula_eip out",
                 "endpoint": "PLC",
                 "variable": "Variable",
                 "variable-select": "Select a variable"
             },
-            "disclaimer": "Caution when writing data to production PLCs!"
+            "disclaimer": "Caution when writing data to production FBC-Couplers!"
         },
         "endpoint": {
             "label": {
@@ -61,10 +61,10 @@
             "select": "Select a device"
         },
         "error": {
-            "onconnect": "Error connecting to PLC: ",
+            "onconnect": "Error connecting to FBC-Coupler: ",
             "badvalues": "Failure (Bad values)",
             "missingconfig": "Missing configuration",
-            "noresponse": "No response from PLC, restarting the communication",
+            "noresponse": "No response from FBC-Coupler, restarting the communication",
             "invalidconntype": "Invalid configuration type \"__connmode__\""
         }
     }

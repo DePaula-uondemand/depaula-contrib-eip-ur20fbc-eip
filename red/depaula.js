@@ -1,7 +1,9 @@
 //@ts-check
 /*
+Original version:
   Copyright: (c) 2016-2019, Smart-Tech Controle e Automação
   GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
+Mod created by DEPAULA
 */
 
 function nrInputShim(node, fn){
@@ -16,7 +18,7 @@ module.exports = function(RED) {
     "use strict";
 
     var util = require('util');
-    var nodepccc = require('nodepccc');
+    var nodepccc = require('depaula_eip');
     var EventEmitter = require('events').EventEmitter;
 
     // ---------- pccc Endpoint ----------
@@ -35,7 +37,7 @@ module.exports = function(RED) {
         var obj;
 
         if (typeof val != 'string' && typeof val != 'number' && typeof val != 'boolean') {
-            val = RED._("pccc.endpoint.status.online");
+            val = RED._("depaula_eip.endpoint.status.online");
         }
 
         switch (status) {
@@ -50,34 +52,34 @@ module.exports = function(RED) {
                 obj = {
                     fill: 'yellow',
                     shape: 'dot',
-                    text: RED._("pccc.endpoint.status.badvalues")
+                    text: RED._("depaula_eip.endpoint.status.badvalues")
                 };
                 break;
             case 'offline':
                 obj = {
                     fill: 'red',
                     shape: 'dot',
-                    text: RED._("pccc.endpoint.status.offline")
+                    text: RED._("depaula_eip.endpoint.status.offline")
                 };
                 break;
             case 'connecting':
                 obj = {
                     fill: 'yellow',
                     shape: 'dot',
-                    text: RED._("pccc.endpoint.status.connecting")
+                    text: RED._("depaula_eip.endpoint.status.connecting")
                 };
                 break;
             default:
                 obj = {
                     fill: 'grey',
                     shape: 'dot',
-                    text: RED._("pccc.endpoint.status.unknown")
+                    text: RED._("depaula_eip.endpoint.status.unknown")
                 };
         }
         return obj;
     }
 
-    function pcccEndpoint(config) {
+    function depaula_eip_Endpoint(config) {
         EventEmitter.call(this);
         var node = this;
         var oldValues = {};
@@ -129,7 +131,7 @@ module.exports = function(RED) {
 
             if (err) {
                 manageStatus('badvalues');
-                elm.done(RED._("pccc.error.badvalues"));
+                elm.done(RED._("depaula_eip.error.badvalues"));
             } else {
                 manageStatus('online');
                 elm.done();
@@ -165,7 +167,7 @@ module.exports = function(RED) {
 
             if (err) {
                 manageStatus('badvalues');
-                node.error(RED._("pccc.error.badvalues"));
+                node.error(RED._("depaula_eip.error.badvalues"));
                 return;
             }
 
@@ -192,7 +194,7 @@ module.exports = function(RED) {
                 readDeferred++;
 
                 if (readDeferred > 10) {
-                    node.warn(RED._("pccc.error.noresponse"), {});
+                    node.warn(RED._("depaula_eip.error.noresponse"), {});
                     connect(); //this also drops any existing connection
                 }
             }
@@ -203,7 +205,7 @@ module.exports = function(RED) {
 
             if (err) {
                 manageStatus('offline');
-                node.error(RED._("pccc.error.onconnect") + err.toString());
+                node.error(RED._("depaula_eip.error.onconnect") + err.toString());
 
                 connected = false;
 
@@ -253,7 +255,7 @@ module.exports = function(RED) {
                 manageStatus('connecting');
 
                 connected = false;
-                node._conn = new nodepccc({
+                node._conn = new depaula_eip({
                     silent: !isVerbose,
                     debug: isVerbose
                 });
@@ -271,18 +273,18 @@ module.exports = function(RED) {
         manageStatus('offline');
         connect();
     }
-    RED.nodes.registerType("pccc endpoint", pcccEndpoint);
+    RED.nodes.registerType("depaula_eip endpoint", depaula_eip_Endpoint);
 
-    // ---------- pccc In ----------
+    // ---------- depaula_eip In ----------
 
-    function pcccIn(config) {
+    function depaula_eip_In(config) {
         var node = this;
         var statusVal;
         RED.nodes.createNode(this, config);
 
         node.endpoint = RED.nodes.getNode(config.endpoint);
         if (!node.endpoint) {
-            return node.error(RED._("pccc.in.error.missingconfig"));
+            return node.error(RED._("depaula_eip.in.error.missingconfig"));
         }
 
         function sendMsg(data, key, status) {
@@ -357,18 +359,18 @@ module.exports = function(RED) {
             done();
         });
     }
-    RED.nodes.registerType("pccc in", pcccIn);
+    RED.nodes.registerType("depaula_eip in", pcccIn);
 
-    // ---------- pccc Out ----------
+    // ---------- depaula_eip Out ----------
 
-    function pcccOut(config) {
+    function depaula_eip_Out(config) {
         var node = this;
         var statusVal;
         RED.nodes.createNode(this, config);
 
         node.endpoint = RED.nodes.getNode(config.endpoint);
         if (!node.endpoint) {
-            return node.error(RED._("pccc.in.error.missingconfig"));
+            return node.error(RED._("depaula_eip.in.error.missingconfig"));
         }
 
         function onEndpointStatus(s) {
@@ -397,5 +399,5 @@ module.exports = function(RED) {
             done();
         });
     }
-    RED.nodes.registerType("pccc out", pcccOut);
+    RED.nodes.registerType("depaula_eip out", pcccOut);
 };
